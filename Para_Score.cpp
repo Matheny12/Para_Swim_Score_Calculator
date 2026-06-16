@@ -31,7 +31,7 @@ int main() {
 	int class_num = 0;
 	string class_name;
 
-	cout << "------ Enter your Classification ------" << endl;
+	cout << "------ Enter Classification ------" << endl;
 	cout << "1: S1" << endl;
 	cout << "2: S2" << endl;
 	cout << "3: S3" << endl;
@@ -1954,7 +1954,7 @@ int main() {
 	cout << endl;
 
 	float p = 0.0f;
-	cout << "Enter the Swimmers Time in Seconds" << endl;
+	cout << "------ Enter Time in Seconds ------" << endl;
 	cin >> p;
 	
 	float exponent_layer2 = b - (c / p);
