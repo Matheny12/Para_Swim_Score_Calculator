@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!5}
+}
+
+\title{\textbf{WPS Points Calculator}}
+\author{Tyler Matheny}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Overview}
+A high-performance World Para Swimming (WPS) Points Calculator built with a C++ backend compiled to WebAssembly (WASM) and a modern, responsive web interface.
+
+\section{Key Features}
+\begin{itemize}
+    \item \textbf{Blazing Fast Performance:} Heavy calculation loops and classification lookup tables execute natively via WebAssembly.
+    \item \textbf{Strict Classification Validation:} Automatically enforces WPS pairing rules:
+    \begin{itemize}
+        \item Individual Medley (IM) events strictly require SM classifications.
+        \item Breaststroke events strictly require SB classifications.
+        \item Freestyle, Backstroke, and Butterfly events strictly require S classifications.
+    \end{itemize}
+    \item \textbf{Modern, Responsive UI:} Features a centered card design, clean typography, and intuitive input formatting.
+    \item \textbf{Automated Deployment:} Integrated build pipeline for continuous deployment via Vercel.
+\end{itemize}
+
+\section{Tech Stack}
+\begin{itemize}
+    \item \textbf{Core Engine:} C++17
+    \item \textbf{Compilation:} Emscripten (\texttt{emcc}) to WebAssembly (\texttt{.wasm} / \texttt{.js})
+    \item \textbf{Frontend:} HTML5, CSS3 (CSS Variables, Flexbox), Vanilla JavaScript (\texttt{Module.ccall})
+    \item \textbf{Hosting \& Deployment:} Vercel
+\end{itemize}
+
+\section{Local Development \& Compilation}
+To build and run this project locally, ensure you have the Emscripten SDK (\texttt{emsdk}) installed.
+
+\subsection{1. Compile C++ to WebAssembly}
+Run the following \texttt{emcc} command to generate the bindings:
+\begin{lstlisting}[language=bash]
+emcc Para_Score.cpp -o Para_score.js \
+    -s EXPORTED_FUNCTIONS='["_calculateScore"]' \
+    -s EXPORTED_RUNTIME_METHODS='["ccall"]' \
+    -s WASM=1
+\end{lstlisting}
+
+\subsection{2. Local Testing Server}
+Spin up a quick local static server using Python:
+\begin{lstlisting}[language=bash]
+python3 -m http.server 8000
+\end{lstlisting}
+Then open \url{http://localhost:8000} in your browser.
+
+\section{Automation Script (\texttt{run.sh})}
+To streamline compilation, git tracking, and production deployment into a single step, use the included shell script:
+
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+emcc Para_Score.cpp -o Para_score.js -s EXPORTED_FUNCTIONS='["_calculateScore"]' -s EXPORTED_RUNTIME_METHODS='["ccall"]'
+git add .
+git commit -a -m "Update calculation logic or UI"
+git push
+npx vercel --prod
+\end{lstlisting}
+
+Make it executable and run:
+\begin{lstlisting}[language=bash]
+chmod +x run.sh
+./run.sh
+\end{lstlisting}
+
+\end{document}
