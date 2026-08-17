@@ -17,6 +17,20 @@ extern "C" {
         string gender(gender_arg);
         string class_name(class_name_arg);
 
+        // --- Strict Event & Classification Validation ---
+        bool is_im = (event1 >= 16 && event1 <= 18);
+        bool is_breast = (event1 >= 10 && event1 <= 12);
+        bool is_other = !is_im && !is_breast;
+
+        bool class_is_sm = (class_name.rfind("SM", 0) == 0);
+        bool class_is_sb = (class_name.rfind("SB", 0) == 0);
+        bool class_is_s = (class_name.rfind("S", 0) == 0) && !class_is_sb && !class_is_sm;
+
+        if ((is_im && !class_is_sm) || (is_breast && !class_is_sb) || (is_other && !class_is_s)) {
+            return -1.0f;
+        }
+        // ------------------------------------------------
+
         bool validInput = false;
         float b = 0.0f;
         float c = 0.0f;
@@ -924,7 +938,7 @@ extern "C" {
                     else if (class_name == "SB9") {
                         c = 200.355;
                     }
-                    else if (class_name == "S10") {
+                    else if (class_name == "SB10") {
                         c = 167.819;
                     }
                     else if (class_name == "SB11") {
@@ -972,7 +986,7 @@ extern "C" {
                     else if (class_name == "SB9") {
                         c = 213.307;
                     }
-                    else if (class_name == "S10") {
+                    else if (class_name == "SB10") {
                         c = 192.112;
                     }
                     else if (class_name == "SB11") {
@@ -1020,7 +1034,7 @@ extern "C" {
                     else if (class_name == "SB9") {
                         c = 450.872;
                     }
-                    else if (class_name == "S10") {
+                    else if (class_name == "SB10") {
                         c = 467.142;
                     }
                     else if (class_name == "SB11") {
@@ -1076,7 +1090,7 @@ extern "C" {
                         c = 519.558;
                         b = 5.069247;
                     }
-                    else if (class_name == "S10") {
+                    else if (class_name == "SB10") {
                         c = 516.938;
                         b = 5.069247;
                     }
@@ -1129,7 +1143,7 @@ extern "C" {
                     else if (class_name == "SB9") {
                         c = 1519.554;
                     }
-                    else if (class_name == "S10") {
+                    else if (class_name == "SB10") {
                         c = 467.142;
                     }
                     else if (class_name == "SB11") {
@@ -1177,7 +1191,7 @@ extern "C" {
                     else if (class_name == "SB9") {
                         c = 1635.193;
                     }
-                    else if (class_name == "S10") {
+                    else if (class_name == "SB10") {
                         c = 516.938;
                     }
                     else if (class_name == "SB11") {
