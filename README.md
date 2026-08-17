@@ -1,4 +1,4 @@
-# WPS Points Calculator
+# [WPS Points Calculator](https://wps-points-calculator.vercel.app)
 
 A high-performance World Para Swimming (WPS) Points Calculator built with a C++ backend compiled to WebAssembly (WASM) and a modern, responsive web interface.
 
