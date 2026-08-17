@@ -17,19 +17,38 @@ extern "C" {
         string gender(gender_arg);
         string class_name(class_name_arg);
 
-        // --- Strict Event & Classification Validation ---
-        bool is_im = (event1 >= 16 && event1 <= 18);
-        bool is_breast = (event1 >= 10 && event1 <= 12);
-        bool is_other = !is_im && !is_breast;
-
-        bool class_is_sm = (class_name.rfind("SM", 0) == 0);
-        bool class_is_sb = (class_name.rfind("SB", 0) == 0);
-        bool class_is_s = (class_name.rfind("S", 0) == 0) && !class_is_sb && !class_is_sm;
-
-        if ((is_im && !class_is_sm) || (is_breast && !class_is_sb) || (is_other && !class_is_s)) {
+        string prefix = "";
+        int class_num = 0;
+        if (class_name.rfind("SM", 0) == 0) {
+            prefix = "SM";
+            try { class_num = stoi(class_name.substr(2)); } catch (...) { return -1.0f; }
+        } else if (class_name.rfind("SB", 0) == 0) {
+            prefix = "SB";
+            try { class_num = stoi(class_name.substr(2)); } catch (...) { return -1.0f; }
+        } else if (class_name.rfind("S", 0) == 0) {
+            prefix = "S";
+            try { class_num = stoi(class_name.substr(1)); } catch (...) { return -1.0f; }
+        } else {
             return -1.0f;
         }
-        // ------------------------------------------------
+
+        if (event1 == 7) { 
+            if (prefix != "S" || class_num < 1 || class_num > 5) return -1.0f;
+        } else if (event1 == 10) { 
+            if (prefix != "SB" || class_num < 1 || class_num > 3) return -1.0f;
+        } else if (event1 == 13) { 
+            if (prefix != "S" || class_num < 1 || class_num > 7) return -1.0f;
+        } else if (event1 >= 10 && event1 <= 12) { 
+            if (prefix != "SB") return -1.0f;
+        } else if (event1 >= 16 && event1 <= 18) { 
+            if (event1 == 16) { 
+                if (prefix != "SM" || class_num < 1 || class_num > 4) return -1.0f;
+            } else { 
+                if (prefix != "SM") return -1.0f;
+            }
+        } else { 
+            if (prefix != "S") return -1.0f;
+        }
 
         bool validInput = false;
         float b = 0.0f;
@@ -639,28 +658,28 @@ extern "C" {
                         c = 215.364;
                     }
                     else if (class_name == "S6") {
-                        c = 212.669;
+                        validInput = false;
                     }
                     else if (class_name == "S7") {
-                        c = 201.668;
+                        validInput = false;
                     }
                     else if (class_name == "S8") {
-                        c = 185.631;
+                        validInput = false;
                     }
                     else if (class_name == "S9") {
-                        c = 178.78;
+                        validInput = false;
                     }
                     else if (class_name == "S10") {
-                        c = 167.819;
+                        validInput = false;
                     }
                     else if (class_name == "S11") {
-                        c = 184.764;
+                        validInput = false;
                     }
                     else if (class_name == "S12") {
-                        c = 162.967;
+                        validInput = false;
                     }
                     else if (class_name == "S13") {
-                        c = 158.718;
+                        validInput = false;
                     }
                     else if (class_name == "S14") {
                         validInput = false;
@@ -687,28 +706,28 @@ extern "C" {
                         c = 258.902;
                     }
                     else if (class_name == "S6") {
-                        c = 236.191;
+                        validInput = false;
                     }
                     else if (class_name == "S7") {
-                        c = 230.695;
+                        validInput = false;
                     }
                     else if (class_name == "S8") {
-                        c = 221.162;
+                        validInput = false;
                     }
                     else if (class_name == "S9") {
-                        c = 200.813;
+                        validInput = false;
                     }
                     else if (class_name == "S10") {
-                        c = 192.112;
+                        validInput = false;
                     }
                     else if (class_name == "S11") {
-                        c = 207.685;
+                        validInput = false;
                     }
                     else if (class_name == "S12") {
-                        c = 192.303;
+                        validInput = false;
                     }
                     else if (class_name == "S13") {
-                        c = 191.785;
+                        validInput = false;
                     }
                     else if (class_name == "S14") {
                         validInput = false;            
@@ -921,34 +940,34 @@ extern "C" {
                         c = 299.467;
                     }
                     else if (class_name == "SB4") {
-                        c = 271.204;
+                        validInput = false;
                     }
                     else if (class_name == "SB5") {
-                        c = 268.343;
+                        validInput = false;
                     }
                     else if (class_name == "SB6") {
-                        c = 232.309;
+                        validInput = false;
                     }
                     else if (class_name == "SB7") {
-                        c = 227.424;
+                        validInput = false;
                     }
                     else if (class_name == "SB8") {
-                        c = 205.596;
+                        validInput = false;
                     }
                     else if (class_name == "SB9") {
-                        c = 200.355;
+                        validInput = false;
                     }
                     else if (class_name == "SB10") {
-                        c = 167.819;
+                        validInput = false;
                     }
                     else if (class_name == "SB11") {
-                        c = 213.244;
+                        validInput = false;
                     }
                     else if (class_name == "SB12") {
-                        c = 195.17;
+                        validInput = false;
                     }
                     else if (class_name == "SB13") {
-                        c = 191.094;
+                        validInput = false;
                     }
                     else if (class_name == "SB14") {
                         validInput = false;
@@ -969,34 +988,34 @@ extern "C" {
                         c = 330.784;
                     }
                     else if (class_name == "SB4") {
-                        c = 291.412;
+                        validInput = false;
                     }
                     else if (class_name == "SB5") {
-                        c = 272.282;
+                        validInput = false;
                     }
                     else if (class_name == "SB6") {
-                        c = 262.784;
+                        validInput = false;
                     }
                     else if (class_name == "SB7") {
-                        c = 258.801;
+                        validInput = false;
                     }
                     else if (class_name == "SB8") {
-                        c = 227.868;
+                        validInput = false;
                     }
                     else if (class_name == "SB9") {
-                        c = 213.307;
+                        validInput = false;
                     }
                     else if (class_name == "SB10") {
-                        c = 192.112;
+                        validInput = false;
                     }
                     else if (class_name == "SB11") {
-                        c = 229.633;
+                        validInput = false;
                     }
                     else if (class_name == "SB12") {
-                        c = 210.683;
+                        validInput = false;
                     }
                     else if (class_name == "SB13") {
-                        c = 219.939;
+                        validInput = false;
                     }
                     else if (class_name == "SB14") {
                         validInput = false;            
@@ -1240,28 +1259,22 @@ extern "C" {
                         b = 5.033853;
                     }
                     else if (class_name == "S8") {
-                        c = 184.239;
-                        b = 5.033853;
+                        validInput = false;
                     }
                     else if (class_name == "S9") {
-                        c = 177.747;
-                        b = 5.033853;
+                        validInput = false;
                     }
                     else if (class_name == "S10") {
-                        c = 169.989;
-                        b = 5.033853;
+                        validInput = false;
                     }
                     else if (class_name == "S11") {
-                        c = 174.456;
-                        b = 5.033853;
+                        validInput = false;
                     }
                     else if (class_name == "S12") {
-                        c = 166.225;
-                        b = 5.033853;
+                        validInput = false;
                     }
                     else if (class_name == "S13") {
-                        c = 170.629;
-                        b = 5.033853;
+                        validInput = false;
                     }
                     else if (class_name == "S14") {
                         validInput = false;
@@ -1294,22 +1307,22 @@ extern "C" {
                         c = 203.172;
                     }
                     else if (class_name == "S8") {
-                        c = 197.546;
+                        validInput = false;
                     }
                     else if (class_name == "S9") {
-                        c = 182.435;
+                        validInput = false;
                     }
                     else if (class_name == "S10") {
-                        c = 178.36;
+                        validInput = false;
                     }
                     else if (class_name == "S11") {
-                        c = 198.452;
+                        validInput = false;
                     }
                     else if (class_name == "S12") {
-                        c = 173.587;
+                        validInput = false;
                     }
                     else if (class_name == "S13") {
-                        c = 177.685;
+                        validInput = false;
                     }
                     else if (class_name == "S14") {
                         validInput = false;            
@@ -1527,31 +1540,31 @@ extern "C" {
                         c = 955.697;
                     }
                     else if (class_name == "SM5") {
-                        c = 244.5;
+                        validInput = false;
                     }
                     else if (class_name == "SM6") {
-                        c = 228.082;
+                        validInput = false;
                     }
                     else if (class_name == "SM7") {
-                        c = 217.608;
+                        validInput = false;
                     }
                     else if (class_name == "SM8") {
-                        c = 207.301;
+                        validInput = false;
                     }
                     else if (class_name == "SM9") {
-                        c = 198.669;
+                        validInput = false;
                     }
                     else if (class_name == "SM10") {
-                        c = 188.441;
+                        validInput = false;
                     }
                     else if (class_name == "SM11") {
-                        c = 199.846;
+                        validInput = false;
                     }
                     else if (class_name == "SM12") {
-                        c = 183.932;
+                        validInput = false;
                     }
                     else if (class_name == "SM13") {
-                        c = 183.895;
+                        validInput = false;
                     }
                     else if (class_name == "SM14") {
                         validInput = false;
@@ -1576,31 +1589,31 @@ extern "C" {
                         c = 913.176;
                     }
                     else if (class_name == "SM5") {
-                        c = 260.748;
+                        validInput = false;
                     }
                     else if (class_name == "SM6") {
-                        c = 236.95;
+                        validInput = false;
                     }
                     else if (class_name == "SM7") {
-                        c = 229.74;
+                        validInput = false;
                     }
                     else if (class_name == "SM8") {
-                        c = 218.616;
+                        validInput = false;
                     }
                     else if (class_name == "SM9") {
-                        c = 206.819;
+                        validInput = false;
                     }
                     else if (class_name == "SM10") {
-                        c = 198.416;
+                        validInput = false;
                     }
                     else if (class_name == "SM11") {
-                        c = 207.528;
+                        validInput = false;
                     }
                     else if (class_name == "SM12") {
-                        c = 189.189;
+                        validInput = false;
                     }
                     else if (class_name == "SM13") {
-                        c = 191.273;
+                        validInput = false;
                     }
                     else if (class_name == "SM14") {
                         validInput = false;            
@@ -1612,16 +1625,16 @@ extern "C" {
                     b = 7.155608;
                     validInput = true;
                     if (class_name == "SM1") {
-                        c = 1929.499;
+                        validInput = false;
                     }
                     else if (class_name == "SM2") {
-                        c = 1425.496;
+                        validInput = false;
                     }
                     else if (class_name == "SM3") {
-                        c = 2170.953;
+                        validInput = false;
                     }
                     else if (class_name == "SM4") {
-                        c = 1687.596;
+                        validInput = false;
                     }
                     else if (class_name == "SM5") {
                         c = 1537.839;
@@ -1660,17 +1673,16 @@ extern "C" {
                     b = 6.904309;
                     validInput = true;
                     if (class_name == "SM1") {
-                        c = 1297.667;
+                        validInput = false;
                     }
                     else if (class_name == "SM2") {
-                        c = 1608.986;
+                        validInput = false;
                     }
                     else if (class_name == "SM3") {
-                        c = 5141.396;
-                        b = 6.917578;
+                        validInput = false;
                     }
                     else if (class_name == "SM4") {
-                        c = 1912.781;
+                        validInput = false;
                     }
                     else if (class_name == "SM5") {
                         c = 1699.945;
@@ -1709,16 +1721,16 @@ extern "C" {
                     b = 9.693428;
                     validInput = true;
                     if (class_name == "SM1") {
-                        c = 1929.499;
+                        validInput = false;
                     }
                     else if (class_name == "SM2") {
-                        c = 1425.496;
+                        validInput = false;
                     }
                     else if (class_name == "SM3") {
-                        c = 2255.741;
+                        validInput = false;
                     }
                     else if (class_name == "SM4") {
-                        c = 1727.73;
+                        validInput = false;
                     }
                     else if (class_name == "SM5") {
                         c = 1572.295;
@@ -1757,13 +1769,13 @@ extern "C" {
                     b = 8.825412;
                     validInput = true;
                     if (class_name == "SM1") {
-                        c = 1297.667;
+                        validInput = false;
                     }
                     else if (class_name == "SM2") {
-                        c = 1608.986;
+                        validInput = false;
                     }
                     else if (class_name == "SM3") {
-                        c = 5141.396;
+                        c = 5141.396; 
                     }
                     else if (class_name == "SM4") {
                         c = 1969.432;
